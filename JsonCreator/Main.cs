@@ -17,6 +17,7 @@ namespace JsonCreator
 		{
 			string source = "/Users/voquanghoa/Downloads/gec123";
 			string des = "/Users/voquanghoa/Downloads/dess";
+			Directory.Delete (des, true);
 
 			var dataItem = ProcessFolder (source, des);
 			File.WriteAllText (Path.Combine (des, "data.json"), JsonConvert.SerializeObject (dataItem));
@@ -25,7 +26,7 @@ namespace JsonCreator
 		private static DataItem ProcessFolder(string source, string des){
 			if (!Directory.Exists (des)) {
 				Directory.CreateDirectory (des);
-			}
+			} 
 
 			var dataItem = CreateDataItem (source);
 			var directoryName = Path.GetFileName (source);
@@ -45,6 +46,8 @@ namespace JsonCreator
 						txtJsonConverter.Convert (file, des);
 					}
 				}
+
+				textConverter.RenameFilesInDir (des);
 
 				children.AddRange(Directory.EnumerateFiles (des).Where(x=>!x.EndsWith(".DS_Store")).Select(CreateDataItem));
 			}
